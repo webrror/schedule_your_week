@@ -14,6 +14,19 @@ class Scheduler extends StatefulWidget {
 class _SchedulerState extends State<Scheduler> {
   final _prefServices = PrefServices();
 
+  void getSchedule() async {
+    var weeklySchedule = await _prefServices.getSchedulePref();
+
+    print(weeklySchedule);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getSchedule();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +61,7 @@ class _SchedulerState extends State<Scheduler> {
                 return ParentChildCheckbox(
                   parentCheckboxColor: Colors.green,
                   childrenCheckboxColor: Colors.deepPurple,
+                  
                   parent: Text(
                     weekDays[index].toString(),
                     style: const TextStyle(fontWeight: FontWeight.bold),
@@ -88,7 +102,7 @@ class _SchedulerState extends State<Scheduler> {
     final schedulePref =
         WeeklySchedule(schedule: ParentChildCheckbox.selectedChildrens);
 
-    // if saving was success, return to landing page (also refresh landing page) 
+    // if saving was success, return to landing page (also refresh landing page)
     if (await _prefServices.saveSchedulePref(schedulePref)) {
       Navigator.pop(context, true);
     }
